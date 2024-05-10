@@ -1,0 +1,60 @@
+#Dariusz Rozmus 420915
+#Algorytm kożysta z algorytmu Dijkstry, zaimplementowanego do zmodyfikowanego grafu, czyli grafu
+#danego w zadaniu z połączonymi ze sobą wierzchołkami z listy S(każdy z każdym krawędzią o długości 0)
+
+
+
+from zad5testy import runtests
+
+def spacetravel( n, E, S, a, b ):
+    max_e = E[0][0]
+    min_e = E[0][0]
+    for i in range(len(E)):
+        if E[i][0] > max_e or E[i][1] > max_e:
+            if E[i][0] > E[i][1]:
+                max_e = E[i][0]
+            else:
+                max_e = E[i][1]
+        elif E[i][0] < min_e or E[i][1] < min_e:
+            if E[i][0] < E[i][1]:
+                min_e = E[i][0]
+            else:
+                min_e = E[i][1]
+    infinity = float('inf')
+
+    T = [[[], []] for _ in range(n)]
+    for i in range(len(E)):
+        T[E[i][0]][0].append(E[i][1])
+        T[E[i][0]][1].append(E[i][2])
+        T[E[i][1]][0].append(E[i][0])
+        T[E[i][1]][1].append(E[i][2])
+    # print(T)
+    for i in range(len(S)):
+        for j in range(i, len(S)):
+            T[S[i]][0].append(S[j])
+            T[S[j]][0].append(S[i])
+            T[S[i]][1].append(0)
+            T[S[j]][1].append(0)
+    # print(T)
+
+    # print(T)
+
+    from queue import PriorityQueue
+    def Dijkstry(T, x, n, b):
+        parent = [None] * n
+        length = [infinity] * n
+        Q = PriorityQueue()
+        length[x] = 0
+        Q.put((0, x))
+        while not Q.empty():
+            _, u = Q.get()
+            cnt = 0
+            for v in T[u][0]:
+                if length[v] > (length[u] + T[u][1][cnt]):
+                    length[v] = length[u] + T[u][1][cnt]
+                    parent[v] = u
+                    Q.put((length[v], v))
+
+                cnt += 1
+        return length[b] if length[b] != infinity else None
+    return Dijkstry(T,a,n,b)

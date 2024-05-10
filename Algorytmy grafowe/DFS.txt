@@ -1,0 +1,12 @@
+def DFS(G,x):
+    visited=[False]*len(G)
+    parent=[None]*len(G)
+    d=[float('inf')]*len(G)
+    def dfs_visit(G,u):
+        visited[u]=True
+        for v in G[u]:
+            if not visited[v]:
+                parent[v]=u
+                dfs_visit(G,v)
+    dfs_visit(G,x)
+    return visited,parent

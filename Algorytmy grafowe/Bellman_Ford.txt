@@ -1,0 +1,26 @@
+G=[[0,9,0,2],
+   [9,0,3,0],
+   [0,3,0,1],
+   [2,0,1,0]]
+
+def Bellman_Ford(G,x):
+    dist = [float('inf')] * len(G)
+    parent = [None] * len(G)
+    dist[x] = 0
+    for _ in range(len(G)-1):
+        for i in range(len(G)):
+            for j in range(len(G)):
+                print(dist, i, j)
+                if G[i][j] != 0:
+                    if dist[j] > dist[i] + G[i][j]:
+                        dist[j] = dist[i] + G[i][j]
+                        parent[j]=i
+        # Sprawdzenie, czy istnieje cykl o ujemnej sumie wag
+    for u in range(len(G)):
+        for v in range(len(G)):
+            if G[u][v] != 0:
+                if dist[v] > dist[u] + G[u][v]:
+                    print("Negative cycle detected")
+    return parent,dist
+
+print(Bellman_Ford(G,0))

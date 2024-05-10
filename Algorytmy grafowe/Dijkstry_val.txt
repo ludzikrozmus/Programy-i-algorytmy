@@ -1,0 +1,20 @@
+  def val(i, r):
+    return i * 2 + r
+  def Dijkstry_val(G, x, r):
+    visited = [False] * len(G)
+    # parent = [None] * len(G)
+    d = [float('inf')] * len(G)
+    Q = PriorityQueue()
+    Q.put((0, x))
+    visited[x] = True
+    d[x] = 0
+    while not Q.empty():
+      _, u = Q.get()
+      visited[u] = True
+      for i in range(len(G[u])):
+        v = G[u][i][0]
+        if d[v] > d[u] + val(G[u][i][1], r):
+          d[v] = d[u] + val(G[u][i][1], r)
+          Q.put((d[v], v))
+          visited[v] = True
+    return d

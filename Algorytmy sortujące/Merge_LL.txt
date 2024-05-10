@@ -1,0 +1,87 @@
+import random
+T=[2,3,1,4,5,10,8,2,1,9]
+class Node:
+    def __init__(self, val=0, next_node=None):
+        self.val = val
+        self.next = next_node
+
+def display(p):
+    while p:
+        print(p.val,'->', end=" ")
+        p=p.next
+    print('')
+
+earlier=None
+for i in range(len(T)):
+    p=Node()
+    p.val=T[i]
+    p.next=earlier
+    earlier=p
+
+first=p
+
+
+def cut(p):
+    if p is None or p.next is None:
+        return None
+
+    while p.next is not None and p.next.val >= p.val:
+        p = p.next
+    p_end = p
+    p = p.next
+    p_end.next = None
+    return p
+
+
+def sort_serie_naturalne(first): #sortowanie
+    earlier = None
+    początek = first
+    ogon = Node()
+    ogon.val = początek
+    ogon.next = earlier
+    earlier = ogon
+    początek = cut(początek)
+    while początek:
+        q = Node()
+        q.val=początek
+        q.next = earlier
+        earlier = q
+        początek = cut(początek)
+    ogon.next=q
+    return q
+
+def add_end(last, add):
+    last.next = add
+    return add.next
+
+def scal(p_1,p_2):
+    a=p_1.val
+    b=p_2.val
+    last = Node()
+    last.val=0
+    last.next=None
+    result=last
+    while a is not None and b is not None:
+        if a.val<=b.val:
+            last.next=a
+            a=a.next
+        else:
+            last.next=b
+            b=b.next
+        last = last.next
+    if a is not None:
+        last.next=a
+    if b is not None:
+        last.next=b
+
+    return result.next
+
+p=sort_serie_naturalne(first)
+
+while p!=p.next:
+    pomoc = scal(p, p.next)
+    p.val = pomoc
+    p.next = p.next.next
+    p=p.next
+
+display(p.val)

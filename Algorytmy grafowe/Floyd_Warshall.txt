@@ -1,0 +1,32 @@
+INF = float('inf')
+
+def floyd_warshall(G):
+    n = len(G)
+    dist = [[INF] * n for _ in range(n)]
+    parent = [[None]* n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u in range(n):
+        for v in range(n):
+            if G[u][v] != INF:
+                dist[u][v] = G[u][v]
+                parent[u][v]=v
+                parent[v][u]=u
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][j]>dist[i][k] + dist[k][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+                    parent[j][i] = parent[i][k]
+
+    return dist,parent
+G = [
+    [0, 15, INF, 2],
+    [15, 0, 3, INF],
+    [INF, 3, 0, 1],
+    [2, INF, 1, 0]
+]
+
+print(floyd_warshall(G))

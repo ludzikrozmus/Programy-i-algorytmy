@@ -1,0 +1,108 @@
+import random
+
+
+T=[(random.randint(0,100))/100 for _ in range (10)]
+T=[0.53, 0.76, 0.71, 0.16, 0.88, 0.61, 0.53, 0.24, 0.54, 1.0]
+print(T)
+def min_fast(T):
+    n=len(T)
+    min_val=T[0]
+    for i in range(0,n-1,1):
+        if T[i]>T[i+1]:
+            if T[i+1]<min_val:
+                min_val=T[i+1]
+        else:
+            if T[i]<min_val:
+                min_val=T[i]
+        i+=1
+    return min_val
+def mearch_sort_down(A, first, last):
+    if first >= last:
+        return 0
+    mid = (first + last) // 2
+    mearch_sort_down(A, first, mid)
+    mearch_sort_down(A, mid + 1, last)
+    scal(A, first, last, mid)
+def scal(A, first, last, mid):
+    i = 0
+    j = 0
+    Arr_1 = A[first:mid + 1]
+    Arr_2 = A[mid + 1:last + 1]
+    cnt = first
+    n_1 = len(Arr_1)
+    n_2 = len(Arr_2)
+    while i < n_1 and j < n_2:
+        if Arr_1[i] <= Arr_2[j]:
+            A[cnt] = Arr_1[i]
+            i += 1
+        else:
+            A[cnt] = Arr_2[j]
+            j += 1
+        cnt += 1
+    while i < n_1:
+        A[cnt] = Arr_1[i]
+        i += 1
+        cnt += 1
+    while j < n_2:
+        A[cnt] = Arr_2[j]
+        j += 1
+        cnt += 1
+def test(A):
+    for i in range(len(A) - 1):
+        if A[i] > A[i + 1]:
+            return False
+    return True
+print(min_fast(T))
+def max_fast(T):
+    n=len(T)
+    max_val=T[0]
+    for i in range(0,n-1,1):
+        if T[i]<T[i+1]:
+            if T[i+1]>max_val:
+                max_val=T[i+1]
+        else:
+            if T[i]>max_val:
+                max_val=T[i]
+        i+=1
+    return max_val
+def max_fast(T):
+    n = len(T)
+    max_val = T[0]
+    for i in range(0, n - 1, 1):
+        if T[i] < T[i + 1]:
+            if T[i + 1] > max_val:
+                max_val = T[i + 1]
+        else:
+            if T[i] > max_val:
+                max_val = T[i]
+        i += 1
+    return max_val
+def min_fast(T):
+    n = len(T)
+    min_val = T[0]
+    for i in range(0, n - 1, 1):
+        if T[i] > T[i + 1]:
+            if T[i + 1] < min_val:
+                min_val = T[i + 1]
+        else:
+            if T[i] < min_val:
+                min_val = T[i]
+        i += 1
+    return min_val
+print(max_fast(T))
+def bucket(T):
+    n=len(T)
+    min_val=min_fast(T)
+    max_val=max_fast(T)
+    Arr_bucket=[[]for _ in range(n)]
+    print(Arr_bucket)
+    for i in range(n):
+        Arr_bucket[int((T[i]/(max_val))*(n-1))].append(T[i])
+    print(Arr_bucket)
+    for j in range(n):
+        mearch_sort_down(Arr_bucket[j],0,len(Arr_bucket[j])-1)
+    print(Arr_bucket)
+    T = [item for sublist in Arr_bucket for item in sublist]
+    return T
+T=bucket(T)
+print(T)

@@ -1,0 +1,86 @@
+L=[(3406, 5641, 368),
+(3406, 6135, 520),
+(6135, 55763, 436),
+(881, 55763, 522),
+(881, 4329, 474),
+(4329, 37279, 885),
+(2335, 37279, 417),
+(2335, 15869, 798),
+(2486, 15869, 414),
+(2486, 25712, 811),
+(761, 25712, 823),
+(761, 16055, 731),
+(4363, 16055, 364),
+(4363, 36797, 609),
+(2050, 36797, 377),
+(2050, 3690, 670),
+(3690, 25266, 644),
+(3052, 25266, 864),
+(3052, 38944, 904),
+(2585, 38944, 595),
+(2585, 4810, 570),
+]
+x=5641
+y=4810
+t=286
+def Flight(L, x, y, t):
+    def DFS(L, x, y, t,maxi,mini):
+        visited = [False] * len(L)
+        parent = [None] * len(L)
+        def dfs_visit(L, u, x,y, maxi, mini, t):
+            # print(u,maxi,mini)
+            if (maxi-mini)>=(2 * t + 1) and u!=x:
+                return False
+            visited[u] = True
+            if u == y:
+                visited[u] = False
+                if (maxi - mini) < (2 * t + 1):
+                    return True
+                return False
+            cnt = 0
+            maxi_a = maxi
+            mini_b = mini
+            for v in L[u][0]:
+                if not visited[v]:
+                    if L[u][1][cnt] > maxi_a:
+                        maxi_a = L[u][1][cnt]
+                    if L[u][1][cnt] < mini_b:
+                        mini_b = L[u][1][cnt]
+                    parent[v] = u
+                    if dfs_visit(L, v, x,y, maxi_a, mini_b, t):
+                        return True
+                    maxi_a = maxi
+                    mini_b = mini
+                    visited[v] = False
+                cnt += 1
+            return False
+        # for i in range(len(L[x][0])):
+        #     return dfs_visit(L, x, y, L[x][1][0], L[x][1][0], t)
+        return dfs_visit(L, x, x,y, mini, maxi, t)
+
+    mini = float('inf')
+    maxi = float('-inf')
+    for i in range(len(L)):
+        if L[i][0] > L[i][1]:
+            if L[i][0] > maxi:
+                maxi = L[i][0]
+            if L[i][1] < mini:
+                mini = L[i][1]
+        else:
+            if L[i][1] > maxi:
+                maxi = L[i][1]
+            if L[i][0] < mini:
+                mini = L[i][0]
+    print(maxi,mini)
+    n = maxi
+
+    T = [[[], []] for _ in range(n + 1)]
+    for i in range(len(L)):
+        T[L[i][0]][0].append(L[i][1])
+        T[L[i][0]][1].append(L[i][2])
+        T[L[i][1]][0].append(L[i][0])
+        T[L[i][1]][1].append(L[i][2])
+    d_max=float('inf')
+    d_min=float('-inf')
+    return DFS(T, x, y, t,d_max,d_min)
+print(Flight(L, x, y, t))

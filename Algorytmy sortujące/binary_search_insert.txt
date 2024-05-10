@@ -1,0 +1,19 @@
+def binary_search_ins(T,val,first,last):
+    n=len(T)
+    print(first,last,n,(first+last)//2)
+    if first==last or first<0 or last>n-1:
+        pass
+    if T[last]<=val:
+        return last+1
+    if T[first]>=val:
+        return first
+    if first==last or first<0 or last>n-1:
+        pass
+    if T[((first+last)//2)]<=val and T[((first+last)//2)+1]>=val:
+        return ((first+last)//2)+1
+    if T[(first+last)//2]>val:
+        return binary_search_ins(T,val,first,last-(((last-first)//2)))
+    if T[(first+last)//2]<val:
+        return binary_search_ins(T,val,first+(((last-first)//2)),last)
+
+#NP  Tablica_first.insert(index_2,T[i+p])

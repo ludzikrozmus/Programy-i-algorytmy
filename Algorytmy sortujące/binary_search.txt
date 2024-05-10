@@ -1,0 +1,12 @@
+def binary_search(T,val,first,last):
+    n=len(T)
+    if first==last:
+        return 0
+    if T[(first+last)//2]==val:
+        return (first+last)//2
+    if T[(first+last)//2]>val:
+        return binary_search(T,val,first,last//2)
+    if T[(first+last)//2]<val:
+        return binary_search(T,val,first+((first+last)//2),last)
+
+#NP del Tablica_first[index_1]

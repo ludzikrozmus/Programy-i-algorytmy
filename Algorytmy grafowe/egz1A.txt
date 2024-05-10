@@ -1,0 +1,56 @@
+from egz1Atesty import runtests
+from queue import PriorityQueue
+def gold(G,V,s,t,r):
+
+  def val(i, r):
+    return i * 2 + r
+  def Dijkstry(G, x):
+    visited = [False] * len(G)
+    # parent = [None] * len(G)
+    d = [float('inf')] * len(G)
+    Q = PriorityQueue()
+    Q.put((0, x))
+    visited[x] = True
+    d[x] = 0
+    while not Q.empty():
+      _, u = Q.get()
+      visited[u] = True
+      for i in range(len(G[u])):
+        v = G[u][i][0]
+        if d[v] > d[u] + G[u][i][1]:
+          d[v] = d[u] + G[u][i][1]
+          Q.put((d[v], v))
+          visited[v] = True
+    return d
+  def Dijkstry_val(G, x, r):
+    visited = [False] * len(G)
+    # parent = [None] * len(G)
+    d = [float('inf')] * len(G)
+    Q = PriorityQueue()
+    Q.put((0, x))
+    visited[x] = True
+    d[x] = 0
+    while not Q.empty():
+      _, u = Q.get()
+      visited[u] = True
+      for i in range(len(G[u])):
+        v = G[u][i][0]
+        if d[v] > d[u] + val(G[u][i][1], r):
+          d[v] = d[u] + val(G[u][i][1], r)
+          Q.put((d[v], v))
+          visited[v] = True
+    return d
+
+  # print(Dijkstry(G, s))
+  # print(Dijkstry_val(G, t, r))
+  Tab1 = Dijkstry(G, s)
+  Tab2 = Dijkstry_val(G, t, r)
+  mini = float('inf')
+  for i in range(len(Tab1)):
+    if Tab1[i] + Tab2[i] - V[i] < mini:
+      mini = Tab1[i] + Tab2[i] - V[i]
+  return mini
+
+
+# zmien all_tests na True zeby uruchomic wszystkie testy
+runtests( gold, all_tests = True )
